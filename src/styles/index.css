@@ -1,0 +1,10 @@
+/* src/styles/index.css */
+@import "./theme.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Additional Global Styles */
+body {
+    @apply bg-background text-text font-serif;
+}

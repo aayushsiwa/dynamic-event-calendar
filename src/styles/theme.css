@@ -1,0 +1,31 @@
+/* src/styles/theme.css */
+:root {
+    --bg-color: #fdfdfd; /* Soft paper white */
+    --text-color: #4d4d4d; /* Dark gray for text */
+    --primary-color: #00897b; /* Muted teal for accents */
+    --accent-color: #fbc02d; /* Muted yellow for highlights */
+    --border-color: #ddd; /* Light gray for borders */
+    --grid-bg-color: #fbfbfb; /* Slightly off-white for calendar grid */
+    --weekend-bg: #f7f3e9; /* A soft beige for weekends */
+    --current-day-bg: #00897b; /* Teal for the current day background */
+    --current-day-text: #ffffff; /* White for current day text */
+    /* --shadow-color: rgba(0, 0, 0, 0.1); Subtle shadow for paper depth */
+}
+
+[data-theme="dark"] {
+    --bg-color: #2a2a2a; /* Dark background for paper-like texture */
+    --text-color: #e0e0e0; /* Light text color */
+    --primary-color: #26a69a; /* Teal for primary elements */
+    --accent-color: #fdd835; /* Yellow for accents */
+    --border-color: #444; /* Dark gray for borders */
+    --grid-bg-color: #3a3a3a; /* Darker gray for grid background */
+    --weekend-bg: #403b32; /* Soft brown for weekends */
+    --current-day-bg: #26a69a; /* Teal for current day background */
+    --current-day-text: #ffffff; /* White for current day text */
+    /* --shadow-color: rgba(
+        0,
+        0,
+        0,
+        0.5
+    ); Stronger shadow for depth in dark mode  */
+}
