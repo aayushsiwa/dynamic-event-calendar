@@ -13,14 +13,14 @@
 }
 
 [data-theme="dark"] {
-    --bg-color: #333232; /* Dark background for paper-like texture */
+    --bg-color: #2a2a2a; /* Dark background for paper-like texture */
     --text-color: #e0e0e0; /* Light text color */
-    --primary-color: #87bba2; /* Teal for primary elements */
-    --accent-color: #ca8a04; /* Yellow for accents */
+    --primary-color: #26a69a; /* Teal for primary elements */
+    --accent-color: #fdd835; /* Yellow for accents */
     --border-color: #444; /* Dark gray for borders */
     --grid-bg-color: #3a3a3a; /* Darker gray for grid background */
     --weekend-bg: #403b32; /* Soft brown for weekends */
-    --current-day-bg: #2081c3; /* Teal for current day background */
+    --current-day-bg: #26a69a; /* Teal for current day background */
     --current-day-text: #ffffff; /* White for current day text */
     /* --shadow-color: rgba(
         0,
