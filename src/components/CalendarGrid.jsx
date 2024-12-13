@@ -6,6 +6,7 @@ const CalendarGrid = ({
   onDayClick,
   events,
   onAddEvent,
+  onEditEvent,
   removeEvent,
 }) => {
   const [selectedDay, setSelectedDay] = useState(currentDate);
@@ -116,7 +117,16 @@ const CalendarGrid = ({
             onClick={() => handleDayClick(day)}
           >
             {/* Day Number */}
-            {day && <span className="select-none">{day.getDate()}</span>}
+            {day && (
+              <span
+                className={`select-none
+                  ${day.getDate() === selectedDay.getDate() && !isCurrentDay(day) ? "text-selectedDay-text" : ""}
+
+              `}
+              >
+                {day.getDate()}
+              </span>
+            )}
 
             {/* Event Indicators */}
             {day && hasEvents(day) && (
@@ -188,7 +198,7 @@ const CalendarGrid = ({
                     <div className="flex space-x-2">
                       <button
                         onClick={() =>
-                          onAddEvent(selectedDay, { ...event, index })
+                          onEditEvent(selectedDay, { ...event, index })
                         }
                         className="text-blue-500 hover:text-blue-700"
                       >

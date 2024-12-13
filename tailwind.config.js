@@ -15,6 +15,9 @@ module.exports = {
           bg: "var(--current-day-bg)",
           text: "var(--current-day-text)",
         },
+        selectedDay: {
+          text: "var(--selected-day-text)",
+        },
       },
       boxShadow: {
         paper: "0 4px 6px var(--shadow-color)",

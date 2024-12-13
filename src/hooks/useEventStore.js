@@ -11,7 +11,6 @@ const useEventStore = () => {
     }
   });
 
-  // Sync events with localStorage whenever they change
   useEffect(() => {
     try {
       localStorage.setItem("events", JSON.stringify(events));
@@ -28,6 +27,25 @@ const useEventStore = () => {
     }));
   };
 
+  const editEvent = (date, eventIndex, updatedEvent) => {
+    console.log("here");
+    const dateKey = date.toDateString();
+    console.log(updatedEvent);
+    setEvents((prevEvents) => {
+      if (
+        !prevEvents[dateKey] ||
+        eventIndex < 0 ||
+        eventIndex >= prevEvents[dateKey].length
+      ) {
+        console.warn("Invalid event index for edit");
+        return prevEvents;
+      }
+      const updatedEvents = [...prevEvents[dateKey]];
+      updatedEvents[eventIndex] = updatedEvent;
+      return { ...prevEvents, [dateKey]: updatedEvents };
+    });
+  };
+
   const removeEvent = (date, eventIndex) => {
     const dateKey = date.toDateString();
     setEvents((prevEvents) => {
@@ -36,8 +54,8 @@ const useEventStore = () => {
         eventIndex < 0 ||
         eventIndex >= prevEvents[dateKey].length
       ) {
-        console.warn("Invalid event index or no events to remove");
-        return prevEvents; // Return unchanged
+        console.warn("Invalid event index for removal");
+        return prevEvents;
       }
       return {
         ...prevEvents,
@@ -51,7 +69,7 @@ const useEventStore = () => {
     localStorage.removeItem("events");
   };
 
-  return { events, addEvent, removeEvent, clearEvents };
+  return { events, addEvent, editEvent, removeEvent, clearEvents };
 };
 
 export default useEventStore;

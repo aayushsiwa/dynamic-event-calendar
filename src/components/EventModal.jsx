@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const EventModal = ({ isOpen, onClose, onSave, eventToEdit }) => {
+const EventModal = ({ isOpen, onClose, onSave, eventToEdit, eventIndex }) => {
   const [eventName, setEventName] = useState(eventToEdit?.eventName || "");
   const [startTime, setStartTime] = useState(eventToEdit?.startTime || "");
   const [endTime, setEndTime] = useState(eventToEdit?.endTime || "");
@@ -11,11 +11,7 @@ const EventModal = ({ isOpen, onClose, onSave, eventToEdit }) => {
 
   useEffect(() => {
     if (eventToEdit) {
-      setEventName(eventToEdit.eventName);
-      setStartTime(eventToEdit.startTime);
-      setEndTime(eventToEdit.endTime);
-      setDescription(eventToEdit.description);
-      setIsAllDay(eventToEdit.isAllDay);
+      console.log("ih");
     }
   }, [eventToEdit]);
 
@@ -36,21 +32,12 @@ const EventModal = ({ isOpen, onClose, onSave, eventToEdit }) => {
       endTime: isAllDay ? "23:59" : endTime,
       description,
       isAllDay,
+      eventIndex,
     });
 
     onClose();
-    resetForm();
   };
 
-  const resetForm = () => {
-    setEventName("");
-    setStartTime("");
-    setEndTime("");
-    setDescription("");
-    setIsAllDay(false);
-  };
-
-  // Function to handle clicks outside the modal
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("modal-overlay")) {
       onClose();
