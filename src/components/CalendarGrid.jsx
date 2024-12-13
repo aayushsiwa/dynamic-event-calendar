@@ -1,4 +1,3 @@
-// src/components/CalendarGrid.jsx
 import React, { useState } from "react";
 
 const CalendarGrid = ({
@@ -7,6 +6,7 @@ const CalendarGrid = ({
   onDayClick,
   events,
   onAddEvent,
+  removeEvent,
 }) => {
   const [selectedDay, setSelectedDay] = useState(currentDate);
 
@@ -58,6 +58,7 @@ const CalendarGrid = ({
     if (day) {
       setSelectedDay(day);
       onDayClick(day);
+      onAddEvent(day);
     }
   };
 
@@ -67,41 +68,32 @@ const CalendarGrid = ({
 
   const days = daysInMonth(currentDate);
   const DAY_NAMES = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    "SUNDAY",
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
   ];
 
   return (
-    <div className="bg-background text-text rounded-lg shadow-paper p-4">
+    <div className="bg-background text-text rounded-lg p-4">
       {/* Calendar Header */}
-      <div className="flex justify-between items-center mb-4">
-        <button
-          className="px-4 py-2 rounded-md shadow bg-primary text-white hover:bg-accent transition"
-          onClick={prevMonth}
-        >
-          Previous
-        </button>
+      <div className="flex justify-start items-center mb-4 gap-4">
+        <button onClick={prevMonth}>{"<"}</button>
+        <button onClick={nextMonth}>{">"}</button>
+
         <h2 className="text-xl font-bold">
           {currentDate.toLocaleString("default", { month: "long" })}{" "}
           {currentDate.getFullYear()}
         </h2>
-        <button
-          className="px-4 py-2 rounded-md shadow bg-primary text-white hover:bg-accent transition"
-          onClick={nextMonth}
-        >
-          Next
-        </button>
       </div>
 
       {/* Days of the Week */}
       <div className="grid grid-cols-7 gap-2 mb-2">
         {DAY_NAMES.map((dayName, index) => (
-          <div key={index} className="text-center font-medium">
+          <div key={index} className="text-center font-light text-gray-600">
             {dayName}
           </div>
         ))}
@@ -136,19 +128,19 @@ const CalendarGrid = ({
                     .map((_, i) => (
                       <div
                         key={i}
-                        className="w-2 h-2 rounded-full bg-gray-500"
+                        className="w-2 h-2 rounded-full bg-yellow-600"
                       ></div>
                     ))}
                   {hasNEvents(day).length > 5 && (
-                    <span className="text-gray-500 font-bold">+</span>
+                    <span className="text-yellow-600 font-bold">+</span>
                   )}
                 </div>
 
                 {/* For smaller screens (below md) */}
                 <div className="md:hidden flex items-center space-x-1">
-                  <div className="w-2 h-2 rounded-full bg-gray-500"></div>
+                  <div className="w-2 h-2 rounded-full bg-yellow-600"></div>
                   {hasNEvents(day).length > 0 && (
-                    <span className="text-gray-500 font-bold">+</span>
+                    <span className="text-yellow-600 font-bold">+</span>
                   )}
                 </div>
               </div>
@@ -193,13 +185,22 @@ const CalendarGrid = ({
                         {event.description}
                       </p>
                     </div>
-                    {/* Optional: Delete Button */}
-                    {/* <button
-                      onClick={() => removeEvent(selectedDay, index)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      Delete
-                    </button> */}
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() =>
+                          onAddEvent(selectedDay, { ...event, index })
+                        }
+                        className="text-blue-500 hover:text-blue-700"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => removeEvent(selectedDay, index)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>

@@ -1,7 +1,7 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: "Georgia", serif; /* Adds a more classic, paper-like feel */
+    font-family: "Poppins";
     line-height: 1.6;
 }
 

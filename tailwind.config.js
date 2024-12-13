@@ -21,7 +21,8 @@ module.exports = {
         card: "0 2px 4px var(--shadow-color)",
       },
       fontFamily: {
-        serif: ["Georgia", "serif"],
+        // serif: ["Georgia", "serif"],
+        poppins: ["Poppins"],
       },
     },
   },

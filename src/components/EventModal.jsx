@@ -1,12 +1,23 @@
-// src/components/EventModal.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const EventModal = ({ isOpen, onClose, onSave }) => {
-  const [eventName, setEventName] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [description, setDescription] = useState("");
-  const [isAllDay, setIsAllDay] = useState(false);
+const EventModal = ({ isOpen, onClose, onSave, eventToEdit }) => {
+  const [eventName, setEventName] = useState(eventToEdit?.eventName || "");
+  const [startTime, setStartTime] = useState(eventToEdit?.startTime || "");
+  const [endTime, setEndTime] = useState(eventToEdit?.endTime || "");
+  const [description, setDescription] = useState(
+    eventToEdit?.description || "",
+  );
+  const [isAllDay, setIsAllDay] = useState(eventToEdit?.isAllDay || false);
+
+  useEffect(() => {
+    if (eventToEdit) {
+      setEventName(eventToEdit.eventName);
+      setStartTime(eventToEdit.startTime);
+      setEndTime(eventToEdit.endTime);
+      setDescription(eventToEdit.description);
+      setIsAllDay(eventToEdit.isAllDay);
+    }
+  }, [eventToEdit]);
 
   const handleSave = () => {
     if (!eventName) {
@@ -28,7 +39,10 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
     });
 
     onClose();
-    // Clear the form after saving
+    resetForm();
+  };
+
+  const resetForm = () => {
     setEventName("");
     setStartTime("");
     setEndTime("");
@@ -36,78 +50,100 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
     setIsAllDay(false);
   };
 
-  const handleAllDayToggle = () => {
-    setIsAllDay((prev) => !prev);
-    if (!isAllDay) {
-      setStartTime("00:00");
-      setEndTime("23:59");
-    } else {
-      setStartTime("");
-      setEndTime("");
+  // Function to handle clicks outside the modal
+  const handleOverlayClick = (e) => {
+    if (e.target.classList.contains("modal-overlay")) {
+      onClose();
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-background p-6 rounded-lg shadow-paper w-96">
-        <h2 className="text-xl font-bold mb-4">Add Event</h2>
-        <input
-          type="text"
-          placeholder="Event Name"
-          className="w-full p-2 border border-border rounded mb-4 focus:outline-none focus:ring-2 focus:ring-primary transition"
-          value={eventName}
-          onChange={(e) => setEventName(e.target.value)}
-        />
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="allDay"
-            className="mr-2"
-            checked={isAllDay}
-            onChange={handleAllDayToggle}
-          />
-          <label htmlFor="allDay" className="text-sm text-text">
-            All Day
-          </label>
-        </div>
-        <div className="flex space-x-4 mb-4">
-          <input
-            type="time"
-            className="w-full p-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary transition"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-            disabled={isAllDay}
-          />
-          <input
-            type="time"
-            className="w-full p-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary transition"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            disabled={isAllDay}
-          />
-        </div>
-        <textarea
-          placeholder="Description (optional)"
-          className="w-full p-2 border border-border rounded mb-4 focus:outline-none focus:ring-2 focus:ring-primary transition"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        ></textarea>
-        <div className="flex justify-end space-x-4">
-          <button
-            className="px-4 py-2 bg-primary text-white rounded hover:bg-accent transition"
-            onClick={handleSave}
-          >
-            Save
-          </button>
-          <button
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-        </div>
+    <div
+      className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      onClick={handleOverlayClick}
+    >
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+        <h2 className="text-lg font-bold mb-4">
+          {eventToEdit ? "Edit Event" : "Add Event"}
+        </h2>
+        <form>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Event Name</label>
+            <input
+              type="text"
+              value={eventName}
+              onChange={(e) => setEventName(e.target.value)}
+              className="w-full border border-gray-300 rounded px-2 py-1"
+              required
+            />
+          </div>
+          {!isAllDay && (
+            <div className="mb-4 flex gap-2">
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Start Time
+                </label>
+                <input
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  className="w-full border border-gray-300 rounded px-2 py-1"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  End Time
+                </label>
+                <input
+                  type="time"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                  className="w-full border border-gray-300 rounded px-2 py-1"
+                />
+              </div>
+            </div>
+          )}
+          <div className="mb-4">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={isAllDay}
+                onChange={() => setIsAllDay(!isAllDay)}
+                className="mr-2"
+              />
+              All Day Event
+            </label>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">
+              Description
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full border border-gray-300 rounded px-2 py-1"
+            ></textarea>
+          </div>
+
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="bg-gray-500 text-white px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
