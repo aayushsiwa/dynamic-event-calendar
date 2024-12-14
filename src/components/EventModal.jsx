@@ -12,6 +12,11 @@ const EventModal = ({ isOpen, onClose, onSave, eventToEdit, eventIndex }) => {
   useEffect(() => {
     if (eventToEdit) {
       console.log("ih");
+      setEventName(eventToEdit.eventName);
+      setStartTime(eventToEdit.startTime);
+      setEndTime(eventToEdit.endTime);
+      setDescription(eventToEdit.description);
+      setIsAllDay(eventToEdit.isAllDay);
     }
   }, [eventToEdit]);
 

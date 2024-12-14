@@ -6,7 +6,7 @@ const useEventStore = () => {
       const storedEvents = localStorage.getItem("events");
       return storedEvents ? JSON.parse(storedEvents) : {};
     } catch (error) {
-      console.error("Error parsing events from localStorage", error);
+      console.error("Error parsing events from localStorage:", error);
       return {};
     }
   });
@@ -15,7 +15,7 @@ const useEventStore = () => {
     try {
       localStorage.setItem("events", JSON.stringify(events));
     } catch (error) {
-      console.error("Error saving events to localStorage", error);
+      console.error("Error saving events to localStorage:", error);
     }
   }, [events]);
 
@@ -28,16 +28,16 @@ const useEventStore = () => {
   };
 
   const editEvent = (date, eventIndex, updatedEvent) => {
-    console.log("here");
     const dateKey = date.toDateString();
-    console.log(updatedEvent);
     setEvents((prevEvents) => {
       if (
         !prevEvents[dateKey] ||
         eventIndex < 0 ||
         eventIndex >= prevEvents[dateKey].length
       ) {
-        console.warn("Invalid event index for edit");
+        console.warn(
+          `Invalid event index (${eventIndex}) for editing on ${dateKey}`,
+        );
         return prevEvents;
       }
       const updatedEvents = [...prevEvents[dateKey]];
@@ -47,14 +47,16 @@ const useEventStore = () => {
   };
 
   const removeEvent = (date, eventIndex) => {
+    console.log("removeEvent:", { date, eventIndex });
     const dateKey = date.toDateString();
     setEvents((prevEvents) => {
+      console.log("Current events for date:", prevEvents[dateKey]);
       if (
         !prevEvents[dateKey] ||
         eventIndex < 0 ||
         eventIndex >= prevEvents[dateKey].length
       ) {
-        console.warn("Invalid event index for removal");
+        console.warn("Invalid index or no events for this day.");
         return prevEvents;
       }
       return {
@@ -66,10 +68,21 @@ const useEventStore = () => {
 
   const clearEvents = () => {
     setEvents({});
-    localStorage.removeItem("events");
   };
 
-  return { events, addEvent, editEvent, removeEvent, clearEvents };
+  const getEventsForDate = (date) => {
+    const dateKey = date.toDateString();
+    return events[dateKey] || [];
+  };
+
+  return {
+    events,
+    addEvent,
+    editEvent,
+    removeEvent,
+    clearEvents,
+    getEventsForDate,
+  };
 };
 
 export default useEventStore;

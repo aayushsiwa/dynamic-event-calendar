@@ -7,7 +7,7 @@ const CalendarGrid = ({
   events,
   onAddEvent,
   onEditEvent,
-  removeEvent,
+  onRemoveEvent,
 }) => {
   const [selectedDay, setSelectedDay] = useState(currentDate);
 
@@ -205,7 +205,7 @@ const CalendarGrid = ({
                         Edit
                       </button>
                       <button
-                        onClick={() => removeEvent(selectedDay, index)}
+                        onClick={() => onRemoveEvent(selectedDay, index)}
                         className="text-red-500 hover:text-red-700"
                       >
                         Delete

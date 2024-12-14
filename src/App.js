@@ -34,7 +34,8 @@ const App = () => {
   };
 
   const handleSaveEvent = (event, index) => {
-    if (index !== null) {
+    // console.log(index);
+    if (index != null) {
       editEvent(selectedDay, index, event);
     } else {
       addEvent(selectedDay, event);
@@ -43,6 +44,7 @@ const App = () => {
   };
 
   const handleRemoveEvent = (day, index) => {
+    console.log("Removing event from day:", day, "at index:", index);
     removeEvent(day, index);
   };
 
